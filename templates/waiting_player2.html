@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Waiting for Player 2</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script>
+        async function checkStatus() {
+            const statusDiv = document.getElementById("status");
+            statusDiv.textContent = "Checking...";
+
+            try {
+                const res = await fetch("/status/{{ room_id }}");
+                const data = await res.json();
+                if (data.ready) {
+                    window.location.href = "/show-score/{{ room_id }}";
+                } else {
+                    statusDiv.textContent = "Still waiting for Player 2 to submit their guess.";
+                }
+            } catch (err) {
+                statusDiv.textContent = "Error checking status. Try again in a moment.";
+                console.error("Error checking status", err);
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Waiting for your friend to guess...</h1>
+    <p>Share this link with them:</p>
+    <code>{{ request.host }}/guess/{{ room_id }}</code>
+
+    <br><br>
+    <button onclick="checkStatus()">Check Now</button>
+    <p id="status"></p>
+</body>
+</html>

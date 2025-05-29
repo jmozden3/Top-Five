@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Guess the Ranking</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>Guess How Player 1 Ranked These</h1>
+    <form id="guessForm" action="/submit-guess/{{ room_id }}" method="POST">
+        <div class="drag-instructions">Slide your priorities into place — <b>bottom is least important, top is most important</b>.</div>
+        <div id="card-row" class="card-row vertical">
+            {% for card in cards %}
+            <div class="game-card" draggable="true" data-index="{{ loop.index0 }}">
+                <span class="card-label">{{ card }}</span>
+                <input type="hidden" name="card_{{ loop.index0 }}" value="{{ card }}">
+                <input type="hidden" name="rank_{{ loop.index0 }}" value="{{ loop.index }}">
+            </div>
+            {% endfor %}
+        </div>
+        <button type="submit" class="submit-btn">Submit Guess</button>
+    </form>
+    <script>
+    // Vertical drag-and-drop logic for guessing cards
+    const cardRow = document.getElementById('card-row');
+    let dragged = null;
+    let placeholder = document.createElement('div');
+    placeholder.className = 'game-card placeholder';
+
+    cardRow.addEventListener('dragstart', function(e) {
+        if (e.target.classList.contains('game-card')) {
+            dragged = e.target;
+            dragged.classList.add('dragging');
+            setTimeout(() => dragged.style.visibility = 'hidden', 0);
+        }
+    });
+    cardRow.addEventListener('dragend', function(e) {
+        if (dragged) {
+            dragged.classList.remove('dragging');
+            dragged.style.visibility = '';
+            placeholder.remove();
+            dragged = null;
+            updateRanks();
+        }
+    });
+    cardRow.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        const afterElement = getDragAfterElement(cardRow, e.clientY);
+        if (afterElement == null) {
+            cardRow.appendChild(placeholder);
+        } else {
+            cardRow.insertBefore(placeholder, afterElement);
+        }
+    });
+    cardRow.addEventListener('drop', function(e) {
+        e.preventDefault();
+        if (dragged && placeholder.parentNode === cardRow) {
+            cardRow.insertBefore(dragged, placeholder);
+        }
+    });
+    function getDragAfterElement(container, y) {
+        const draggableElements = [...container.querySelectorAll('.game-card:not(.dragging):not(.placeholder)')];
+        return draggableElements.reduce((closest, child) => {
+            const box = child.getBoundingClientRect();
+            const offset = y - box.top - box.height / 2;
+            if (offset < 0 && offset > closest.offset) {
+                return { offset: offset, element: child };
+            } else {
+                return closest;
+            }
+        }, { offset: -Infinity }).element;
+    }
+    function updateRanks() {
+        const cards = cardRow.querySelectorAll('.game-card');
+        cards.forEach((card, idx) => {
+            card.querySelector('input[name^="rank_"]').value = idx + 1;
+        });
+    }
+    // Initial update
+    updateRanks();
+    </script>
+</body>
+</html>

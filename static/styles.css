@@ -1,0 +1,182 @@
+:root {
+    --color-bg: #fffbe7; /* off-white background */
+    --color-primary: #f47c2b; /* orange */
+    --color-accent: #f9d423; /* yellow */
+    --color-secondary: #2bb6a8; /* teal */
+    --color-btn: #3a6edb; /* blue */
+    --color-btn-hover: #7c4fd6; /* purple */
+    --color-card: #fff;
+    --color-card-border: #f47c2b; /* orange border for cards */
+    --color-text: #222;
+    --color-muted: #888;
+}
+
+body {
+    font-family: sans-serif;
+    text-align: center;
+    padding: 50px;
+    background: var(--color-bg);
+    color: var(--color-text);
+}
+
+h1 {
+    color: var(--color-primary);
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+p {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+}
+
+.card-row {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin: 40px 0 30px 0;
+    flex-wrap: wrap;
+}
+
+.card-row.vertical {
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    width: 100%;
+    max-width: 420px;
+    margin: 40px auto 30px auto;
+}
+
+.game-card {
+    background: var(--color-card);
+    color: var(--color-text);
+    border-radius: 18px;
+    border: 2.5px solid var(--color-card-border);
+    box-shadow: 0 4px 16px rgba(255,94,98,0.10), 0 1.5px 6px rgba(249,212,35,0.10);
+    padding: 36px 28px;
+    min-width: 180px;
+    min-height: 80px;
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    font-weight: bold;
+    cursor: grab;
+    user-select: none;
+    transition: transform 0.15s, box-shadow 0.15s, border 0.15s, background 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 2px;
+}
+.game-card:active, .game-card:focus {
+    transform: scale(1.04) rotate(-2deg);
+    box-shadow: 0 8px 24px rgba(255,94,98,0.18);
+    background: var(--color-accent);
+    outline: 2px solid var(--color-secondary);
+}
+.game-card.dragging {
+    opacity: 0.5;
+    box-shadow: 0 0 0 4px var(--color-accent), 0 8px 24px rgba(54,198,244,0.18);
+}
+.game-card.placeholder {
+    background: repeating-linear-gradient(135deg, #f9f9f9 0px, #f9f9f9 10px, var(--color-accent) 10px, var(--color-accent) 20px);
+    border: 2px dashed var(--color-primary);
+    opacity: 0.7;
+    min-height: 80px;
+    min-width: 160px;
+    box-shadow: none;
+    transition: background 0.2s, border 0.2s;
+}
+.card-label {
+    z-index: 2;
+}
+.submit-btn, .score-btn, .home-btn {
+    background: var(--color-btn);
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    padding: 18px 36px;
+    font-size: clamp(1.1rem, 3vw, 1.3rem);
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(54,198,244,0.10);
+    transition: background 0.2s, transform 0.1s;
+    min-width: 60vw;
+    min-height: 56px;
+    margin-bottom: 12px;
+}
+.submit-btn:active, .score-btn:active, .home-btn:active {
+    background: var(--color-btn-hover);
+    transform: scale(1.04);
+}
+.submit-btn:focus, .score-btn:focus, .home-btn:focus {
+    outline: 2px solid var(--color-primary);
+}
+.move-btn {
+    background: #fff;
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.3em;
+    font-weight: bold;
+    margin: 0 8px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border 0.15s;
+    box-shadow: 0 1px 4px rgba(255,94,98,0.08);
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.move-btn:hover, .move-btn:focus {
+    background: var(--color-primary);
+    color: #fff;
+    border-color: var(--color-accent);
+}
+.drag-instructions {
+    font-size: clamp(1rem, 2.5vw, 1.15rem);
+    color: var(--color-muted);
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+input, button {
+    font-size: 16px;
+}
+@media (max-width: 700px) {
+    body {
+        padding: 10px;
+    }
+    .card-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+    }
+    .card-row.vertical {
+        gap: 10px;
+        max-width: 98vw;
+    }
+    .game-card {
+        min-width: 0;
+        width: 98vw;
+        font-size: 1em;
+        padding: 18px 8px;
+    }
+    .submit-btn, .score-btn, .home-btn {
+        min-width: 90vw;
+        font-size: 1em;
+        padding: 18px 0;
+        position: sticky;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        margin-bottom: 0;
+    }
+    .drag-instructions {
+        font-size: 1em;
+    }
+    .score-table {
+        display: block;
+        overflow-x: auto;
+        width: 100%;
+    }
+}
