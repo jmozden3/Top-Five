@@ -98,8 +98,8 @@ p {
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(54,198,244,0.10);
     transition: background 0.2s, transform 0.1s;
-    min-width: 60vw;
-    min-height: 56px;
+    width: 100%;
+    max-width: 320px;
     margin-bottom: 12px;
 }
 .submit-btn:active, .score-btn:active, .home-btn:active {

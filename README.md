@@ -49,6 +49,7 @@ pip install -r requirements.txt
 # Run the app
 flask run
 Then open your browser to http://localhost:5000.
+```
 
 ## 📄 License
 This project is for educational and entertainment purposes. The original board game inspiration belongs to its respective creators.
