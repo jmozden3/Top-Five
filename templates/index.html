@@ -70,6 +70,25 @@
             color: var(--color-accent);
             font-weight: bold;
         }
+        .home-form {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        .about-section {
+            max-width: 420px;
+            margin: 40px auto;
+            text-align: center;
+            color: var(--color-text);
+        }
+        .about-img {
+            width: 100%;
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
         @media (max-width: 600px) {
             .home-container { padding: 18px 4vw; }
             .home-title { font-size: 1.5em; }
@@ -85,14 +104,20 @@
             Rank your top five, then see if your friends can guess your order.<br>
             <span>Create a game or join one below:</span>
         </div>
-        <form action="/create" method="POST" style="width:100%; display:flex; flex-direction:column; align-items:center; gap:12px; margin-bottom:10px;">
+        <form action="/create" method="POST" class="home-form">
             <button type="submit" class="home-btn">Create New Game</button>
         </form>
-        <form action="/join" method="POST" style="width:100%; display:flex; flex-direction:column; align-items:center; gap:8px;">
+        <form action="/join" method="POST" class="home-form">
             <input type="text" name="room_id" class="home-input" placeholder="Enter Game Code" required>
             <button type="submit" class="home-btn">Join Game</button>
         </form>
         <div style="margin-top:24px; font-size:0.95em; color:var(--color-muted);">Powered by Contoso Games</div>
+    </div>
+    <div class="about-section">
+        <img src="{{ url_for('static', filename='top-five-box.png') }}" alt="Top Five box art" class="about-img" loading="lazy">
+        <div class="about-text">
+            Top Five is a quick and hilarious game where one player secretly ranks five random things — from cold pizza to world peace — and everyone else tries to guess their order. It’s simple to play, surprisingly revealing, and endlessly replayable. Whether you're playing with close friends or total strangers, get ready for big opinions, unexpected priorities, and plenty of laughs. Shoutout to my friends that made it easy to love this game.
+        </div>
     </div>
 </body>
 </html>
