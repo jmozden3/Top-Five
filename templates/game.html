@@ -15,7 +15,9 @@
         <div id="card-row" class="card-row vertical">
             {% for card in cards %}
             <div class="game-card" draggable="true" data-index="{{ loop.index0 }}">
+                <button type="button" class="move-btn move-up" aria-label="Move up" tabindex="0">▲</button>
                 <span class="card-label">{{ card }}</span>
+                <button type="button" class="move-btn move-down" aria-label="Move down" tabindex="0">▼</button>
                 <input type="hidden" name="card_{{ loop.index0 }}" value="{{ card }}">
                 <input type="hidden" name="rank_{{ loop.index0 }}" value="{{ loop.index }}">
             </div>
@@ -81,6 +83,22 @@
     }
     // Initial update
     updateRanks();
+
+    // Arrow button logic for moving cards up/down
+    cardRow.addEventListener('click', function(e) {
+        if (e.target.classList.contains('move-up') || e.target.classList.contains('move-down')) {
+            const card = e.target.closest('.game-card');
+            if (!card) return;
+            if (e.target.classList.contains('move-up')) {
+                const prev = card.previousElementSibling;
+                if (prev) cardRow.insertBefore(card, prev);
+            } else {
+                const next = card.nextElementSibling;
+                if (next) cardRow.insertBefore(next, card);
+            }
+            updateRanks();
+        }
+    });
     </script>
 </body>
 </html>
