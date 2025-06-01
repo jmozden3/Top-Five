@@ -51,5 +51,8 @@ flask run
 Then open your browser to http://localhost:5000.
 ```
 
+## 🤝 Contribution
+It would be awesome if you could help out. If you're interested, check out our [contributing guide](CONTRIBUTING.md)
+
 ## 📄 License
 This project is for educational and entertainment purposes. The original board game inspiration belongs to its respective creators.
