@@ -101,13 +101,17 @@
         <div class="home-emoji">🎲</div>
         <div class="home-title">Top Five</div>
         <div class="home-desc">
-            The party game of priorities!<br>
-            Rank your top five, then see if your friends can guess your order.<br>
-            <span>Create a game or join one below:</span>
+            The party game of priorities!<br><br>
+            <b>How to Play:</b><br><br>
+            <b>Create New Game</b> and rank your Top Five priorities, then share the game with friends and see how well they know you<br>
         </div>
         <form action="/create" method="POST" class="home-form">
             <button type="submit" class="home-btn">Create New Game</button>
         </form>
+        <div class="home-desc">
+            <div class="home-or" style="color: var(--color-muted);">OR</div><br>
+            <b>Join Game</b> with a game code and guess someone else's priorities<br>
+        </div>
         <form action="/join" method="POST" class="home-form">
             <input type="text" name="room_id" class="home-input" placeholder="Enter Game Code" required>
             <button type="submit" class="home-btn">Join Game</button>
