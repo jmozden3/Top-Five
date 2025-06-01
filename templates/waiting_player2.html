@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Waiting for Player 2</title>
+    <title>Share Your Game</title>
     <link rel="stylesheet" href="/static/styles.css">
     <script>
         async function checkStatus() {
@@ -22,14 +22,63 @@
             }
         }
     </script>
+    <style>
+        .share-container {
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(44,44,44,0.12);
+            max-width: 520px;
+            margin: 60px auto 0 auto;
+            padding: 40px 32px;
+            text-align: center;
+        }
+        .game-code {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: var(--color-primary);
+            margin: 20px 0;
+            letter-spacing: 2px;
+        }        .share-link {
+            background: var(--color-bg);
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-family: monospace;
+            font-size: 1.2em;
+            margin: 20px 0;
+            word-break: break-all;
+        }
+        .waiting-text {
+            color: var(--color-text);
+            font-size: 1.2em;
+            margin: 24px 0;
+        }
+        .check-btn {
+            background: var(--color-btn);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 36px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .check-btn:hover {
+            background: var(--color-btn-hover);
+        }
+    </style>
 </head>
 <body>
-    <h1>Waiting for your friend to guess...</h1>
-    <p>Share this link with them:</p>
-    <code>{{ request.host }}/guess/{{ room_id }}</code>
+    <div class="share-container">
+        <h1>Share Your Game!</h1>
+        <p>Share this Game Code:</p>
+        <div class="game-code">{{ room_id }}</div>
+        
+        <p>Or share this link:</p>
+        <div class="share-link">{{ request.host }}/guess/{{ room_id }}</div>
 
-    <br><br>
-    <button onclick="checkStatus()">Check Now</button>
-    <p id="status"></p>
+        <div class="waiting-text" id="status">Waiting for your friend to submit their guess...</div>
+        <button onclick="checkStatus()" class="check-btn">Check Status</button>
+    </div>
 </body>
 </html>

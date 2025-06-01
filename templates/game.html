@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/styles.css">
 </head>
-<body>
-    <h1>Rank These Cards</h1>
-    <p>Game Code: <strong>{{ room_id }}</strong></p>
-    <p>Share this link with your friends: <code>{{ request.host }}/guess/{{ room_id }}</code></p>
-
+<body>    <h1>Rank These Cards</h1>
     <form id="rankingForm" action="/submit-ranking/{{ room_id }}" method="POST">
         <div class="drag-instructions">Slide your priorities into place — <b>bottom is least important, top is most important</b>.</div>
         <div id="card-row" class="card-row vertical">
