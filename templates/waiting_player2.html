@@ -3,57 +3,6 @@
 <head>
     <title>Share Your Game</title>
     <link rel="stylesheet" href="/static/styles.css">
-    <script>
-        async function checkStatus() {
-            const statusDiv = document.getElementById("status");
-            statusDiv.textContent = "Checking...";
-
-            try {
-                const res = await fetch("/status/{{ room_id }}");
-                const data = await res.json();
-                if (data.ready) {
-                    window.location.href = "/show-score/{{ room_id }}";
-                } else {
-                    statusDiv.textContent = "Still waiting for Player 2 to submit their guess.";
-                }
-            } catch (err) {
-                statusDiv.textContent = "Error checking status. Try again in a moment.";
-                console.error("Error checking status", err);
-            }
-        }
-
-        function copyLink() {
-            const link = document.getElementById('share-link').textContent;
-            navigator.clipboard.writeText(link).then(function() {
-                alert('Link copied to clipboard!');
-            }, function() {
-                alert('Failed to copy link.');
-            });
-        }
-        function shareLink() {
-            const link = document.getElementById('share-link').textContent;
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Join my Top Five game!',
-                    text: 'Try to guess my ranking! Play here:',
-                    url: link
-                });
-            } else {
-                alert('Sharing is not supported on this device. You can copy the link instead.');
-            }
-        }
-        // Allow long-press to trigger share on mobile
-        const shareDiv = document.getElementById('share-link');
-        let pressTimer;
-        shareDiv.addEventListener('touchstart', function(e) {
-            pressTimer = setTimeout(function() {
-                shareLink();
-            }, 600);
-        });
-        shareDiv.addEventListener('touchend', function(e) {
-            clearTimeout(pressTimer);
-        });
-    </script>
     <style>
         .share-container {
             background: #fff;
@@ -131,12 +80,63 @@
         <div class="game-code">{{ room_id }}</div>
         
         <p>Or share this link:</p>
-        <div class="share-link" id="share-link">{{ request.host }}/guess/{{ room_id }}</div>
+        <div class="share-link" id="share-link" data-link="{{ request.url_root }}guess/{{ room_id }}">{{ request.url_root }}guess/{{ room_id }}</div>
         <button type="button" class="copy-btn" onclick="copyLink()">Copy Link</button>
         <button type="button" class="share-btn" onclick="shareLink()">Share via...</button>
 
         <div class="waiting-text" id="status">Waiting for your friend to submit their guess...</div>
         <button onclick="checkStatus()" class="check-btn">Check Status</button>
     </div>
+    <script>
+        async function checkStatus() {
+            const statusDiv = document.getElementById("status");
+            statusDiv.textContent = "Checking...";
+
+            try {
+                const res = await fetch("/status/{{ room_id }}");
+                const data = await res.json();
+                if (data.ready) {
+                    window.location.href = "/show-score/{{ room_id }}";
+                } else {
+                    statusDiv.textContent = "Still waiting for Player 2 to submit their guess.";
+                }
+            } catch (err) {
+                statusDiv.textContent = "Error checking status. Try again in a moment.";
+                console.error("Error checking status", err);
+            }
+        }
+
+        function copyLink() {
+            const link = document.getElementById('share-link').getAttribute('data-link');
+            navigator.clipboard.writeText(link).then(function() {
+                alert('Link copied to clipboard!');
+            }, function() {
+                alert('Failed to copy link.');
+            });
+        }
+        function shareLink() {
+            const link = document.getElementById('share-link').getAttribute('data-link');
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Join my Top Five game!',
+                    text: 'Try to guess my ranking! Play here:',
+                    url: link
+                });
+            } else {
+                alert('Sharing is not supported on this device. You can copy the link instead.');
+            }
+        }
+        // Allow long-press to trigger share on mobile
+        const shareDiv = document.getElementById('share-link');
+        let pressTimer;
+        shareDiv.addEventListener('touchstart', function(e) {
+            pressTimer = setTimeout(function() {
+                shareLink();
+            }, 600);
+        });
+        shareDiv.addEventListener('touchend', function(e) {
+            clearTimeout(pressTimer);
+        });
+    </script>
 </body>
 </html>
