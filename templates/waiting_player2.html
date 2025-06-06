@@ -80,7 +80,7 @@
         <div class="game-code">{{ room_id }}</div>
         
         <p>Or share this link:</p>
-        <div class="share-link" id="share-link" data-link="{{ request.url_root }}guess/{{ room_id }}">{{ request.url_root }}guess/{{ room_id }}</div>
+        <div class="share-link" id="share-link" data-link="{{ request.url_root | trim('/') }}/guess/{{ room_id }}">{{ request.url_root | trim('/') }}/guess/{{ room_id }}</div>
         <button type="button" class="copy-btn" onclick="copyLink()">Copy Link</button>
         <button type="button" class="share-btn" onclick="shareLink()">Share via...</button>
 
