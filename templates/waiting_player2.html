@@ -21,6 +21,38 @@
                 console.error("Error checking status", err);
             }
         }
+
+        function copyLink() {
+            const link = document.getElementById('share-link').textContent;
+            navigator.clipboard.writeText(link).then(function() {
+                alert('Link copied to clipboard!');
+            }, function() {
+                alert('Failed to copy link.');
+            });
+        }
+        function shareLink() {
+            const link = document.getElementById('share-link').textContent;
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Join my Top Five game!',
+                    text: 'Try to guess my ranking! Play here:',
+                    url: link
+                });
+            } else {
+                alert('Sharing is not supported on this device. You can copy the link instead.');
+            }
+        }
+        // Allow long-press to trigger share on mobile
+        const shareDiv = document.getElementById('share-link');
+        let pressTimer;
+        shareDiv.addEventListener('touchstart', function(e) {
+            pressTimer = setTimeout(function() {
+                shareLink();
+            }, 600);
+        });
+        shareDiv.addEventListener('touchend', function(e) {
+            clearTimeout(pressTimer);
+        });
     </script>
     <style>
         .share-container {
@@ -66,6 +98,30 @@
         .check-btn:hover {
             background: var(--color-btn-hover);
         }
+        .copy-btn, .share-btn {
+            background: var(--color-secondary);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 22px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 8px 6px 18px 6px;
+            box-shadow: 0 1px 4px rgba(44,44,44,0.08);
+            transition: background 0.2s;
+        }
+        .copy-btn:hover, .share-btn:hover {
+            background: var(--color-primary);
+        }
+        @media (max-width: 700px) {
+            .copy-btn, .share-btn {
+                width: 90vw;
+                max-width: 98vw;
+                font-size: 1em;
+                padding: 14px 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -75,7 +131,9 @@
         <div class="game-code">{{ room_id }}</div>
         
         <p>Or share this link:</p>
-        <div class="share-link">{{ request.host }}/guess/{{ room_id }}</div>
+        <div class="share-link" id="share-link">{{ request.host }}/guess/{{ room_id }}</div>
+        <button type="button" class="copy-btn" onclick="copyLink()">Copy Link</button>
+        <button type="button" class="share-btn" onclick="shareLink()">Share via...</button>
 
         <div class="waiting-text" id="status">Waiting for your friend to submit their guess...</div>
         <button onclick="checkStatus()" class="check-btn">Check Status</button>
